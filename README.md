@@ -21,15 +21,15 @@ t-score and p-value are also checked. The data is splited for cross validation.
 ## How good is the prediction?
 R squared value is used to calculate how well the regression line represents 
 the data. The greater the R squared value, the better the fit.
-$$ r^2 = 1 - (SSR/SST) $$
+$$r^2 = 1 - (SSR/SST)$$
 
 Where SSR is a sum of squared residuals — sum of a diff between the regression 
 line and each indivudual data point.
-$$ SSR = \sum(y-\hat{y}3) $$
+$$SSR = \sum(y-\hat{y}3)$$
 
 And SST is a sum of squares total — sum of a diff between individual data point 
 and their arithmetic mean.
-$$ SST = \sum(y-\bar{y}) $$
+$$SST = \sum(y-\bar{y})$$
 
 ## Docker?
 Yeah, Docker, I know, it is an overkill, but it's a fun excersize. Plus, I can 
