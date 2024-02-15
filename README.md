@@ -32,39 +32,51 @@ and their arithmetic mean.
 $$SST = \sum(y-\bar{y})$$
 
 ## Docker?
-Yeah, Docker, I know, it is an overkill, but it's a fun excersize. Plus, I can 
-run any version of Python without headaches.
+An overkill, but it's a fun excersize. Plus, I can run any version of Python 
+without headaches.
 
-## Install Docker
+### Install Docker
 To install Docker, follow [official installation guides](https://docs.docker.com/get-docker/) 
 for your system.
 
-## Building Docker Image
+### First: Building Docker Image
 Here ```-t``` or ```--tag``` is used to assign ```name:tag``` to the image
 ```shell
 docker build -t lr .
 ```
 
-## Running Docker Image
+### Second: Running Docker Image
 To run the image with the name ```lr``` and use shell terminal by specifying it 
 after interactive terminal ```-it``` flag
 ```shell
 docker run -it lr sh
 ```
-And if changes in the code were made, to restart a container run
+Or if changes in the code were made, to rebuild and rerun the image
 ```shell
-docker restart lr
+docker run -it $(docker build -q .)
 ```
+Where command inside ```$()``` is executed first and the output is passed to the
+ initial command.
+Flag ```-q``` is used to silence build output.
 
-## Other Docker commands
-To view active containers, use command ```docker ps```:
-```shell
-docker ps
-CONTAINER ID   IMAGE                   COMMAND                  CREATED          STATUS          PORTS                                      NAMES
-e9d8c7f5107f   phpmyadmin/phpmyadmin   "/docker-entrypoint.…"   34 seconds ago   Up 32 seconds   0.0.0.0:8001->80/tcp                       php_docker_app-phpmyadmin-1
-ffe68784d349   mysql:latest            "docker-entrypoint.s…"   34 seconds ago   Up 32 seconds   3306/tcp, 33060/tcp                        php_docker_app-db-1
-3396a1c4b8e3   extended-php:1.0        "docker-php-entrypoi…"   34 seconds ago   Up 32 seconds   0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp   php_docker_app-www-1
-```
+### Other Docker commands
+To view images, run ```docker image ls```
+To view containers, run ```docker container ls```
+To view active containers, use command ```docker ps -a```
 
-## Enough is enough
-To clean everyting run ```docker system prune -a```
+### Last: Enough is enough
+Then, to clean everyting run ```docker system prune -a -f```
+```-a``` for dangling and unused images
+```-f``` for auto yes
+
+### Docker docks. Just in case
+Check out [docker documentation](https://docs.docker.com/reference/)
+
+## Makefile?
+“Isn’t Make an old tool?” or “Isn’t it only meant for C and C++ projects?”. 
+In reality, this couldn’t be farther from the truth. It’s correct that Make 
+is a utility developed back in the ’70s and ’80s, and yes, it’s perceived as 
+being tied to C and C++ applications, but that doesn’t mean it doesn’t have 
+its advantages in other projects.
+
+To build, run and then clean an image, run ```make all``` 
