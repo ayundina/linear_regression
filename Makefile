@@ -20,7 +20,7 @@ re:
 		make build
 		make run-v
 
-all:
+new:
+		make clean
 		make build
 		make run-v
-		make clean
