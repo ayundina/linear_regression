@@ -1,9 +1,10 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from sklearn import datasets
 
 from train import train
 from predict import predict
+from visualise import visualise_scatter
+from visualise import visualise_prediction
 
 
 def get_dataset(filename):
@@ -20,23 +21,15 @@ def generate_dataset():
     return X, y
 
 
-def visualise_scatter(x, y):
-    plt.scatter(x, y)
-    plt.savefig("../visualisation/data")
-
-
-def visualise_prediction(x, y, y_prediction_line):
-    plt.plot(x, y_prediction_line, color="black")
-    visualise_scatter(x, y)
-
-
 def main():
     X, y = get_dataset("../data.csv")
     # X, y = generate_dataset()
-    visualise_scatter(X.reshape(-1), y)
+    visualise_scatter(X.reshape(-1), y, "data_raw")
     model = train(X, y)
     y_prediction_line = predict(model, X)
-    visualise_prediction(X.reshape(-1), y, y_prediction_line)
+    destandardized_error = model.mean_squared_error(X, y)
+    print(f"DEstandardized_error = {destandardized_error}")
+    visualise_prediction(X.reshape(-1), y, y_prediction_line, "data_trained")
 
 
 if __name__ == "__main__":
