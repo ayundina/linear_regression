@@ -5,16 +5,14 @@ from visualise import visualise_prediction
 
 
 class LinearRegression():
-    def __init__(self, lr=0.01, n_iterations=1000):
+    def __init__(self, lr=0.001):
         """
         Variables:
-            lr:             learning rate. Used in the gradient descent to help define size of a step to make to minimaze the error
             n_iterations:   max number of steps to take in attempt to minimize error
             weigt:          coefficient. It determines the slope of the trend line
             bias:
         """
         self.lr = lr
-        self.n_iterations = n_iterations
         self.weights = None
         self.bias = None
 
@@ -33,21 +31,24 @@ class LinearRegression():
         return X, y
 
     def destandardize_parameters(self):
-        print(f"standardized_weights = {self.weights}")
-        print(f"standardized_bias = {self.bias}")
         self.weights = self.weights * self.y_std / self.X_std
         self.bias = self.y_mean - self.weights[0] * self.X_mean[0]
-        print(f"DEstandardized_weights = {self.weights}")
-        print(f"DEstandardized_bias = {self.bias}")
 
-    def predict(self, X, standardize_features=False):
+    def predict(self, X):
         y_prediction = np.dot(X, self.weights) + self.bias
         return y_prediction
 
     def mean_squared_error(self, X, y):
-        prediction = self.predict(X, standardize_features=False)
+        prediction = self.predict(X)
         error = np.mean((y - prediction) ** 2)
         return error
+
+    def score(self, X, y):
+        y_predictions = self.predict(X)
+        residual_sum_of_squares = np.sum((y_predictions - y) ** 2)
+        total_sum_of_squares = np.sum((y.mean() - y) ** 2)
+        coefficient_of_determination = 1 - (residual_sum_of_squares / total_sum_of_squares)
+        return coefficient_of_determination
 
     def fit(self, X, y):
         """
@@ -69,22 +70,11 @@ class LinearRegression():
         self.bias = 0
         derivative_weights = [1]
         derivative_bias = 1
-        while abs(derivative_weights[0]) > 0.1 or abs(derivative_bias) > 0.1:
-            y_predictions = np.dot(X, self.weights) + self.bias
-            derivative_weights = (1 / n_samples) * \
-                np.dot(X.T, (y_predictions - y))
+        while abs(derivative_weights[0]) > 0.001 or abs(derivative_bias) > 0.001:
+            y_predictions = self.predict(X)
+            # it is possible to rewrite it with bias = X[0] = 1. Then I can use one derivative for everything
+            derivative_weights = (1 / n_samples) * np.dot(X.T, (y_predictions - y))
             derivative_bias = (1 / n_samples) * np.sum(y_predictions - y)
             self.weights = self.weights - self.lr * derivative_weights
             self.bias = self.bias - self.lr * derivative_bias
-
-        # print(f"derivative_weights = {derivative_weights}")
-        # print(f"derivative_bias = {derivative_bias}")
-
-        standardized_error = self.mean_squared_error(X, y)
-        print(f"standardized_error = {standardized_error}")
-
-        # y_prediction_line = self.predict(X, standardize_features=False)
-        # filename = "data_trained_standardized"
-        # visualise_prediction(X.reshape(-1), y, y_prediction_line, filename)
-
         self.destandardize_parameters()
