@@ -36,17 +36,17 @@ $$SST = \sum(y-\bar{y})$$
 An overkill, but it's a fun excersize. Plus, I can run any version of Python 
 without headaches.
 
-#### Install Docker
+#### First: Install Docker
 To install Docker, follow [official installation guides](https://docs.docker.com/get-docker/) 
 for your system.
 
-#### First: Building Docker Image
+#### Second: Building Docker Image
 Here ```-t``` or ```--tag``` is used to assign ```name:tag``` to the image
 ```shell
 docker build -t lr .
 ```
 
-#### Second: Running Docker Image
+#### Third: Running Docker Image
 To run the image with the name ```lr``` and use shell terminal by specifying it 
 after interactive terminal ```-it``` flag
 ```shell
@@ -80,4 +80,4 @@ is a utility developed back in the ’70s and ’80s, and yes, it’s perceived 
 being tied to C and C++ applications, but that doesn’t mean it doesn’t have 
 its advantages in other projects.
 
-To build, run and then clean an image, run ```make all``` 
+To clean, build, and then run an image, run ```make new``` 
