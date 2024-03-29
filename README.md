@@ -1,8 +1,8 @@
 
-## Single feature linear regression
+## Single/multiple feature linear regression
 To predict the price of a car based on milage
 
-## Data
+## Single feature data
 The data is given in ```data.csv``` and shows two columns - km (milage) and 
 price
 ```shell
@@ -12,11 +12,8 @@ km,     price
 150500, 4400
 ...
 ```
-
-## Fitting a line
-First is to check if data is having a linear pattern. Corellation vs linear 
-regression or trend line. To check if correlation is statistically significant, 
-t-score and p-value are also checked. The data is splited for cross validation.
+![data.csv](https://github.com/ayundina/linear_regression/blob/main/visualisation/data_csv_0.png)
+![data.csv-trained](https://github.com/ayundina/linear_regression/blob/main/visualisation/data_csv_trained_0.png)
 
 ## How good is the prediction?
 R squared value is used to calculate how well the regression line represents 
