@@ -12,7 +12,11 @@ km,     price
 150500, 4400
 ...
 ```
+#### Visualisation
+Km is a single feature in the dataset. Shown on x axis. Price is a target value and shown on y axis
 ![data.csv](https://github.com/ayundina/linear_regression/blob/main/visualisation/data_csv_0.png)
+
+Trained model fits the line in the data cloud
 ![data.csv-trained](https://github.com/ayundina/linear_regression/blob/main/visualisation/data_csv_trained_0.png)
 
 ## How good is the prediction?
@@ -32,17 +36,17 @@ $$SST = \sum(y-\bar{y})$$
 An overkill, but it's a fun excersize. Plus, I can run any version of Python 
 without headaches.
 
-### Install Docker
+#### Install Docker
 To install Docker, follow [official installation guides](https://docs.docker.com/get-docker/) 
 for your system.
 
-### First: Building Docker Image
+#### First: Building Docker Image
 Here ```-t``` or ```--tag``` is used to assign ```name:tag``` to the image
 ```shell
 docker build -t lr .
 ```
 
-### Second: Running Docker Image
+#### Second: Running Docker Image
 To run the image with the name ```lr``` and use shell terminal by specifying it 
 after interactive terminal ```-it``` flag
 ```shell
@@ -56,17 +60,17 @@ Where command inside ```$()``` is executed first and the output is passed to the
  initial command.
 Flag ```-q``` is used to silence build output.
 
-### Other Docker commands
+#### Other Docker commands
 To view images, run ```docker image ls```
 To view containers, run ```docker container ls```
 To view active containers, use command ```docker ps -a```
 
-### Last: Enough is enough
+#### Last: Enough is enough
 Then, to clean everyting run ```docker system prune -a -f```
 ```-a``` for dangling and unused images
 ```-f``` for auto yes
 
-### Docker docks. Just in case
+#### Docker docks. Just in case
 Check out [docker documentation](https://docs.docker.com/reference/)
 
 ## Makefile?
