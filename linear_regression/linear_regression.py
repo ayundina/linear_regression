@@ -2,18 +2,48 @@ import numpy as np
 
 
 class LinearRegression():
+    """
+    Linear regression implementation from scratch.
+
+    Attributes:
+        lr (float): Learning rate for gradient descent.
+        coef_ (numpy.ndarray): Coefficients (weights) of the linear regression model.
+        intercept_ (float): Intercept of the linear regression model.
+        X_mean (numpy.ndarray): Mean of each feature in the training dataset.
+        X_std (numpy.ndarray): Standard deviation of each feature in the training dataset.
+        y_mean (float): Mean of the target variable in the training dataset.
+        y_std (float): Standard deviation of the target variable in the training dataset.
+
+    Methods:
+        standardize_dataset(X, y): Standardizes the features and target variable.
+        destandardize_parameters(): Destandardizes the coefficients and intercept.
+        predict(X): Predicts target variable for input samples.
+        score(X, y): Computes the coefficient of determination (R^2) of the prediction.
+        fit(X, y): Fits the linear regression model to the training dataset using gradient descent.
+    """
+
     def __init__(self, lr=0.001):
         """
-        Variables:
-            n_iterations:   max number of steps to take in attempt to minimize error
-            coef_:          coefficient. It determines the slope of the trend line
-            bias:
+        Initializes the LinearRegression object.
+
+        Args:
+            lr (float, optional): Learning rate for gradient descent. Defaults to 0.001.
         """
         self.lr = lr
         self.coef_ = None
         self.intercept_ = None
 
     def standardize_dataset(self, X, y):
+        """
+        Standardizes the features and target variable.
+
+        Args:
+            X (numpy.ndarray): Features.
+            y (numpy.ndarray): Target variable.
+
+        Returns:
+            tuple: Standardized features and target variable.
+        """
         self.X_mean = X.mean(axis=0).reshape(-1)
         self.X_std = X.std(axis=0).reshape(-1)
         self.y_mean = y.mean()
@@ -23,14 +53,36 @@ class LinearRegression():
         return X, y
 
     def destandardize_parameters(self):
+        """
+        Destandardizes the coefficients and intercept.
+        """
         self.coef_ = np.divide(np.dot(self.coef_, self.y_std), self.X_std)
         self.intercept_ = np.subtract(self.y_mean, np.dot(self.coef_, self.X_mean))
 
     def predict(self, X):
+        """
+        Predicts target variable for input samples.
+
+        Args:
+            X (numpy.ndarray): Input samples.
+
+        Returns:
+            numpy.ndarray: Predicted target variable.
+        """
         y_prediction = np.dot(X, self.coef_) + self.intercept_
         return y_prediction
 
     def score(self, X, y):
+        """
+        Computes the coefficient of determination (R^2) of the prediction.
+
+        Args:
+            X (numpy.ndarray): Features.
+            y (numpy.ndarray): Target variable.
+
+        Returns:
+            float: Coefficient of determination (R^2).
+        """
         y_predictions = self.predict(X)
         residual_sum_of_squares = np.sum((y_predictions - y) ** 2)
         total_sum_of_squares = np.sum((y.mean() - y) ** 2)
@@ -39,13 +91,11 @@ class LinearRegression():
 
     def fit(self, X, y):
         """
-        Initialise weights and bias with zeros. Size of weights array equal to the number of features.
-        1. Calculate prediction
-        2. Calculate derivatives for weigt and bias
-        3. Update weight and bias using derivatives and learning rate
-        Variables:
-            n_samples:      number of rows in a numpy matrix
-            n_features:     number of columns in a numpy matrix
+        Fits the linear regression model to the training dataset using gradient descent.
+
+        Args:
+            X (numpy.ndarray): Features.
+            y (numpy.ndarray): Target variable.
         """
         X, y = self.standardize_dataset(X, y)
         n_samples, n_features = X.shape
