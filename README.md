@@ -13,10 +13,10 @@ km,     price
 ...
 ```
 #### Visualisation
-Km is a single feature in the dataset. Shown on x axis. Price is a target value and shown on y axis
+Km is a single feature in the dataset. Shown on x axis. Price is a target value and shown on y axis<br>
 ![data.csv](https://github.com/ayundina/linear_regression/blob/main/visualisation/data_csv_0.png)
 
-Trained model fits the line in the data cloud
+Trained model fits the line in the data cloud<br>
 ![data.csv-trained](https://github.com/ayundina/linear_regression/blob/main/visualisation/data_csv_trained_0.png)
 
 ## How good is the prediction?
