@@ -1,47 +1,34 @@
 import numpy as np
 
-from visualise import visualise_scatter
-from visualise import visualise_prediction
-
 
 class LinearRegression():
     def __init__(self, lr=0.001):
         """
         Variables:
             n_iterations:   max number of steps to take in attempt to minimize error
-            weigt:          coefficient. It determines the slope of the trend line
+            coef_:          coefficient. It determines the slope of the trend line
             bias:
         """
         self.lr = lr
-        self.weights = None
-        self.bias = None
-
-    def standardize_feature(self, feature):
-        scaler = StandardScaler()
-        scaled_feature = scaler.fit_transform(feature)
-        return scaled_feature, scaler
+        self.coef_ = None
+        self.intercept_ = None
 
     def standardize_dataset(self, X, y):
-        self.X_mean = X.mean(0).reshape(-1)
-        self.X_std = X.std(0).reshape(-1)
+        self.X_mean = X.mean(axis=0).reshape(-1)
+        self.X_std = X.std(axis=0).reshape(-1)
         self.y_mean = y.mean()
         self.y_std = y.std()
-        X = (X - self.X_mean) / self.X_std
-        y = (y - self.y_mean) / self.y_std
+        X = np.divide(np.subtract(X, self.X_mean), self.X_std)
+        y = np.divide(np.subtract(y, self.y_mean), self.y_std)
         return X, y
 
     def destandardize_parameters(self):
-        self.weights = self.weights * self.y_std / self.X_std
-        self.bias = self.y_mean - self.weights[0] * self.X_mean[0]
+        self.coef_ = np.divide(np.dot(self.coef_, self.y_std), self.X_std)
+        self.intercept_ = np.subtract(self.y_mean, np.dot(self.coef_, self.X_mean))
 
     def predict(self, X):
-        y_prediction = np.dot(X, self.weights) + self.bias
+        y_prediction = np.dot(X, self.coef_) + self.intercept_
         return y_prediction
-
-    def mean_squared_error(self, X, y):
-        prediction = self.predict(X)
-        error = np.mean((y - prediction) ** 2)
-        return error
 
     def score(self, X, y):
         y_predictions = self.predict(X)
@@ -60,21 +47,16 @@ class LinearRegression():
             n_samples:      number of rows in a numpy matrix
             n_features:     number of columns in a numpy matrix
         """
-        print(f"X = {X.reshape(-1)}")
-        print(f"y = {y}")
         X, y = self.standardize_dataset(X, y)
         n_samples, n_features = X.shape
-        self.weights = np.zeros(n_features)
-        print(f"n_features = {n_features}")
-        print(f"n_samples = {n_samples}")
-        self.bias = 0
-        derivative_weights = [1]
-        derivative_bias = 1
-        while abs(derivative_weights[0]) > 0.001 or abs(derivative_bias) > 0.001:
+        self.coef_ = np.zeros(n_features)
+        self.intercept_ = 0
+        derivative_coef = np.ones(n_features)
+        derivative_intercept = 1
+        while any(abs(i) > 0.001 for i in derivative_coef) or abs(derivative_intercept) > 0.001:
             y_predictions = self.predict(X)
-            # it is possible to rewrite it with bias = X[0] = 1. Then I can use one derivative for everything
-            derivative_weights = (1 / n_samples) * np.dot(X.T, (y_predictions - y))
-            derivative_bias = (1 / n_samples) * np.sum(y_predictions - y)
-            self.weights = self.weights - self.lr * derivative_weights
-            self.bias = self.bias - self.lr * derivative_bias
+            derivative_coef = (1 / n_samples) * np.dot(X.T, (y_predictions - y))
+            derivative_intercept = (1 / n_samples) * np.sum(y_predictions - y)
+            self.coef_ = self.coef_ - self.lr * derivative_coef
+            self.intercept_ = self.intercept_ - self.lr * derivative_intercept
         self.destandardize_parameters()
