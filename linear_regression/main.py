@@ -49,15 +49,15 @@ def get_dataset(dataset_name):
 
 
 def main():
-    X, y = get_dataset("andrew_ng_ml_course_multivariate")
-    visualise_features(X, y, "data_raw")
+    X, y = get_dataset("codam_univariate")
+    visualise_features(X, y, "data_csv")
     model = train(X, y)
     y_prediction_line = predict(model, X)
     print(f"coefficient = {model.coef_}")
     print(f"intercept = {model.intercept_}")
     print(f"score = {model.score(X, y)}")
     print(f"y_prediction = {y_prediction_line}")
-    visualise_prediction(X, y, y_prediction_line, "data_trained")
+    visualise_prediction(X, y, y_prediction_line, "data_csv_trained")
 
 
 if __name__ == "__main__":
